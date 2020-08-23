@@ -14,35 +14,34 @@ function App() {
 
   async function handleAddRepository() {
     
-    
     const response = await api.post('/repositories', {
       title: `Novo Repo ${Date.now()}`,
       techs: ['NodeJS', 'ReactJS']
     });
-    const repository = response.data
-
-    setRepositories([...repositories, repository]);
+    
+    setRepositories([...repositories, response.data]);
   }
 
 
   async function handleRemoveRepository(id) {
-    await api.delete(`repositories/${id}`)
+    await api.delete(`repositories/${id}`);
 
-    const repositoryList = repositories.filter(repository => repository.id !== id)
-
-    setRepositories(repositoryList);
+    setRepositories(repositories.filter(
+      repository => repository.id !== id
+    ))
   }
 
   return (
     <div>
       <ul data-testid="repository-list">
-        {repositories.map(
-          repository => 
+        {repositories.map(repository => ( 
             <li key={repository.id}>
               {repository.title}
-              <button onClick={() => handleRemoveRepository(repository.id)}>Remover</button>
+              <button onClick={() => handleRemoveRepository(repository.id)}>
+                Remover
+              </button>
             </li>
-          )}
+        ))}
       </ul>
       
       <button onClick={handleAddRepository}>Adicionar</button>
